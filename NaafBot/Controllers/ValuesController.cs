@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using IBM.Cloud.SDK.Core.Authentication.Iam;
+using IBM.Cloud.SDK.Core.Http;
+using IBM.Watson.Assistant.v2;
+using IBM.Watson.Assistant.v2.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NaafBot.Controllers
@@ -10,36 +12,46 @@ namespace NaafBot.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+
+        public IamAuthenticator authenticator;
+        public AssistantService assistant;
+        public  DetailedResponse<SessionResponse> session;
+        
+        public ValuesController()
+        {
+            authenticator = new IamAuthenticator(
+                apikey: "9YDQZj58_EAexMTol16xNlmzEAAjAXJuEcK8iBkmAJY9"
+                );
+            assistant = new AssistantService("2019-02-28", authenticator);
+
+            session = assistant.CreateSession(
+                assistantId: "b5b2f398-3741-40ea-a87f-36538b94773f");
+            assistant.SetServiceUrl("https://gateway.watsonplatform.net/assistant/api");
+        }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult Get(string text)
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var result = assistant.Message(
+                    assistantId: "b5b2f398-3741-40ea-a87f-36538b94773f",
+                    sessionId: session.Result.SessionId,
+                    input: new MessageInput()
+                    {
+                    Text = text
+                    }
+                );
+                var jsonresult = new JsonResult(result.Result);
+                return Ok(jsonresult);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e);
+
+            }
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get( int id )
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post( [FromBody] string value )
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put( int id, [FromBody] string value )
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete( int id )
-        {
-        }
+        
     }
 }
