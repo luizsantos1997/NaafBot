@@ -1,0 +1,30 @@
+<div id="app">
+ <h2 id="Title">
+   NaafBOT
+ </h2>
+ 
+ <div id="Chat">
+   <div id="talks" v-for="talk in talks">
+     <div v-if="talk.isBotAnswer == true"
+     id="left">
+     <p>
+     {{talk.text}}
+     </p>
+       
+     </div>
+     <div v-else id="right">
+        <p>
+     {{talk.text}}
+     </p>
+     </div>
+   </div>
+   <div id="input_text">
+   <input placeholder="Ask Something"
+   v-model="newText"
+   >
+<button @click="AddText">
+Send
+</button>     
+   </div>
+ </div>
+</div>
