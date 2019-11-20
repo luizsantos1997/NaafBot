@@ -1,0 +1,39 @@
+body {
+    background: #FBFBFB;
+    padding: 20px;
+    font-family: Roboto;
+  }
+  #Title{
+    margin: 0 auto;
+    font-family:Roboto;
+    padding-bottom:10px;
+  }
+  #left{
+    margin-right:auto;
+    background-color:green;
+    padding:10px;
+    border-radius: 0 10px 10px 10px;
+  
+  }
+  #right{
+    margin-left:auto;
+    background-color:blue;
+    padding:10px;
+    border-radius: 10px 15px 0  15px;
+  }
+  #talks{
+    display:flex;
+        
+  }
+  
+  #input_text{
+    padding-top:50px;
+  }
+  #app {
+    display:grid;
+    grid-area: 100%;
+    background: #FBBFFB;
+    border-radius: 4px;
+    padding: 20px;
+    transition: all 0.2s;
+  }
