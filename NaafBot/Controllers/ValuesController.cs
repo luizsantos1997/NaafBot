@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using IBM.Cloud.SDK.Core.Authentication.Iam;
 using IBM.Cloud.SDK.Core.Http;
 using IBM.Watson.Assistant.v2;
@@ -30,7 +31,7 @@ namespace NaafBot.Controllers
         }
         // GET api/values
         [HttpGet]
-        public ActionResult Get(string text)
+        public async Task<ActionResult> Get(string text)
         {
             try
             {
@@ -43,6 +44,10 @@ namespace NaafBot.Controllers
                     }
                 );
                 var jsonresult = new JsonResult(result.Result);
+                if(result.Response.Contains("não sei"))
+                {
+                   await QuestionsController.NewQuestion(text);
+                }
                 return Ok(jsonresult);
             }
             catch (Exception e)
